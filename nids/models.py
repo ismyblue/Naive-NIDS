@@ -33,7 +33,7 @@ class UnsignedSmallIntegerField(models.IntegerField):
         return 'smallint unsigned'
 
 
-#  Create your models here.
+# #  Create your models here.
 class Schema(models.Model):
     """
     Snort schema表 Self-documented information about the database
@@ -338,8 +338,8 @@ class Detail(models.Model):
 
 #  自定义表
 class Role(models.Model):
-    role_id = models.IntegerField(primary_key=True)
-    role_name = models.CharField(max_length=20)
+    role_id = models.AutoField(primary_key=True)
+    role_name = models.CharField(max_length=20, unique=True)
     role_desc = models.CharField(max_length=75)
 
     class Meta:
@@ -350,11 +350,11 @@ class User(models.Model):
     """
     web控制台的用户表
     """
-    usr_id = models.IntegerField(primary_key=True,)
-    usr_login = models.CharField(max_length=25)
+    usr_id = models.AutoField(primary_key=True)
+    usr_login = models.CharField(max_length=25, unique=True)
     usr_pwd = models.CharField(max_length=32)
     usr_name = models.CharField(max_length=75)
-    role_id = models.IntegerField()
+    role_id = models.ForeignKey(Role, db_column='role_id', on_delete=models.CASCADE)
     usr_enabled = models.IntegerField()
 
     class Meta:

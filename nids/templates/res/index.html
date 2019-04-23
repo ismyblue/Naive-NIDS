@@ -25,9 +25,9 @@
             <ul class="layui-nav" lay-filter="">
                 <li class="layui-nav-item"><img src="{% static 'nids/images/logo.png' %}" class="layui-circle" style="border: 2px solid #A9B7B7;" width="35px" alt=""></li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">{{ usr_name }}</a>
+                    <a href="javascript:;">{{ usr_login }}</a>
                     <dl class="layui-nav-child"> <!-- 二级菜单 -->
-<!--                        <dd><a href="javascript:;" _href="{% url 'nids:panel_profile' %}">个人信息</a></dd>-->
+                        <!--<dd><a href="{% url 'nids:panel_profile' %}">个人信息</a></dd>-->
                         <dd><a href="{% url 'nids:action_logout' %}">退出</a></dd>
                     </dl>
                 </li>
@@ -212,7 +212,7 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd class="">
-                            <a href="javascript:;" _href="{% url 'nids:panel_user_list' 1 %}">
+                            <a href="javascript:;" _href="{% url 'nids:panel_user_list' %}">
                                 <cite>用户列表</cite>
                             </a>
                         </dd>
@@ -222,7 +222,7 @@
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{% url 'nids:panel_role_list' 1 %}">
+                            <a href="javascript:;" _href="{% url 'nids:panel_role_list' %}">
                                 <cite>角色列表</cite>
                             </a>
                         </dd>

@@ -4,8 +4,8 @@ from nids import views, actions
 
 app_name = 'nids'
 urlpatterns = [
-    # 首页界面url
-    path('', views.panel_index, name='index'),
+    # # 首页界面url
+    path('', views.panel_login, name='panel_index'),
     # 登录界面url，包括登录动作
     path('panel_login/', views.panel_login, name='panel_login'),
     # 控制台主界面
@@ -36,14 +36,18 @@ urlpatterns = [
     path('panel_dstport_warning/', views.panel_dstport_warning, name='panel_dstport_warning'),
     # 个人信息界面
     path('panel_profile/', views.panel_profile, name='panel_profile'),
-    # 信息修改界面
+    # 信息修改界面 信息修改动作
     path('panel_profile_update/', views.panel_profile_update, name='panel_profile_update'),
     # 用户列表界面
-    path('panel_user_list/', views.panel_user_list, name='panel_user_list'),
+    path('panel_user_list/<int:page_num>/', views.panel_user_list, name='panel_user_list'),
+    # 用户更新界面
+    path('panel_user_update/<int:usr_id>/', views.panel_user_update, name='panel_user_update'),
     # 创建用户界面
     path('panel_user_create/', views.panel_user_create, name='panel_user_create'),
     # 角色列表界面
-    path('panel_role_list/', views.panel_role_list, name='panel_role_list'),
+    path('panel_role_list/<int:page_num>/', views.panel_role_list, name='panel_role_list'),
+    # 角色更新界面
+    path('panel_role_update/<int:role_id>/', views.panel_role_update, name='panel_role_update'),
     # 创建角色界面
     path('panel_role_create/', views.panel_role_create, name='panel_role_create'),
     # 系统设置界面
@@ -60,4 +64,10 @@ urlpatterns = [
 
     # 注销动作url
     path('action_logout/', actions.action_logout, name='action_logout'),
+    #删除用户动作
+    path('action_user_delete/<int:usr_id>/', actions.action_user_delete, name='action_user_delete'),
+    # 删除角色动作
+    path('action_role_delete/<int:role_id>/', actions.action_role_delete, name='action_role_delete'),
+
+
 ]

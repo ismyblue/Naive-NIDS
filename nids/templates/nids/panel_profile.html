@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>
+        Naive NIDS
+    </title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="{% static 'nids/css/x-admin.css' %}" media="all">
+</head>
+<body>
+<div class="x-nav">
+            <span class="layui-breadcrumb">
+              <a><cite>Naive NIDS</cite></a>
+              <a><cite>个人管理</cite></a>
+              <a><cite>个人信息</cite></a>
+            </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th colspan="2" scope="col">个人信息</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td width="30%">ID</td>
+            <td>{{ user.usr_id }}</td>
+        </tr>
+        <tr>
+            <th>登录账号</th>
+            <td><span>{{ user.usr_login }}</span></td>
+        </tr>
+        <tr>
+            <td>用户名称</td>
+            <td>{{ user.usr_name }}</td>
+        </tr>
+        <tr>
+            <td>用户角色</td>
+            <td>{{ user.role_id.role_name }}</td>
+        </tr>
+        <tr>
+            <td>用户状态</td>
+            <td>{% if user.usr_enabled %}正常{% else %}禁用{% endif %}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="layui-footer footer footer-demo">
+    <div class="layui-main">
+        <p>
+            <a href="/">
+                Copyright © 2019.Naive NIDS All rights Naive NIDS
+            </a>
+        </p>
+    </div>
+</div>
+<script src="{% static 'nids/lib/layui/layui.js' %}" charset="utf-8"></script>
+<script src="{% static 'nids/js/x-admin.js' %}"></script>
+</body>
+</html>

@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'nids.middleware.VerifyLogin',
+    'nids.middleware.FillUserInfo',
 ]
 
 ROOT_URLCONF = 'nidsproject.urls'
