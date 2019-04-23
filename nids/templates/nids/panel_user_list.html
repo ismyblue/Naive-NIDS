@@ -109,10 +109,10 @@
 
               laypage({
                 cont: 'page'
-                ,pages: {{ num_pages }}
+                ,pages: {{ page_total }}
                 ,curr: {{ users.number }}
                 ,first: 1
-                ,last: {{ num_pages }}
+                ,last: {{ page_total }}
                 ,prev: '<em><</em>'
                 ,next: '<em>></em>'
                 ,jump: function(obj, first){

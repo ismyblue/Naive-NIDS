@@ -13,7 +13,7 @@ urlpatterns = [
     # 欢迎界面，告警信息统计界面
     path('panel_welcome/', views.panel_welcome, name='panel_welcome'),
     # 最新告警界面
-    path('panel_latest_warning/', views.panel_latest_warning, name='panel_latest_warning'),
+    path('panel_latest_warning/<int:page_num>/', views.panel_latest_warning, name='panel_latest_warning'),
     # 日志查询界面
     path('panel_log_query/', views.panel_log_query, name='panel_log_query'),
     # 日志导出记录界面
@@ -58,7 +58,7 @@ urlpatterns = [
     path('panel_shutdown_reboot/', views.panel_shutdown_reboot, name='panel_shutdown_reboot'),
 
     # 详细事件界面
-    path('panel_event_detail/', views.panel_event_detail, name='panel_event_detail'),
+    path('panel_event_detail/<int:eid>/', views.panel_event_detail, name='panel_event_detail'),
 
 
 
@@ -68,6 +68,8 @@ urlpatterns = [
     path('action_user_delete/<int:usr_id>/', actions.action_user_delete, name='action_user_delete'),
     # 删除角色动作
     path('action_role_delete/<int:role_id>/', actions.action_role_delete, name='action_role_delete'),
+    # 删除告警动作
+    path('action_warning_delete/<int:warning_id>/', actions.action_warning_delete, name='action_warning_delete'),
 
 
 ]

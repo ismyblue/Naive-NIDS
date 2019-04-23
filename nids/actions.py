@@ -57,3 +57,7 @@ def action_role_delete(request, role_id):
         return render(request, 'nids/error.html', {'error_message': e})
     else:
         return HttpResponse('success')
+
+
+def action_warning_delete(request, warning_id):
+    pass

@@ -19,56 +19,69 @@
             <span class="layui-breadcrumb">
               <a><cite>Naive NIDS</cite></a>
               <a><cite>用户管理</cite></a>
-              <a><cite>角色列表</cite></a>
+              <a><cite>用户列表</cite></a>
             </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
 <div class="x-body">
-    <xblock><span class="x-right" style="line-height:40px">共有数据：{{ roles|length }} 条</span></xblock>
+    <xblock><span class="x-right" style="line-height:40px">共有数据：{{ warnings|length }} 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
             <th>
-<!--                <input type="checkbox" name="" value="">-->序号
+                <!--                <input type="checkbox" name="" value="">-->序号
             </th>
             <th>
-                ID
+                特征
             </th>
             <th>
-                角色名称
+                时间戳
             </th>
             <th>
-                角色描述
+                来源地址
             </th>
             <th>
-                操作
+                目标地址
             </th>
+            <th>
+                第四层协议
+            </th>
+<!--            <th>-->
+<!--                操作-->
+<!--            </th>-->
         </tr>
         </thead>
         <tbody>
-        {% for role in roles %}
+        {% for warning in warnings %}
         <tr>
             <td>
-<!--                <input type="checkbox" value="1" name="">-->{{ forloop.counter }}
+                <!--                <input type="checkbox" value="1" name="">-->{{ forloop.counter|add:index }}
             </td>
             <td>
-                {{ role.role_id }}
+                <a href="javascript:location.replace('{% url 'nids:panel_event_detail' warning.eid %}');" title="查看{{ warning.sig_name }}的详细信息">{{ warning.sig_name }}</a>
             </td>
             <td>
-                {{ role.role_name }}
+                {{ warning.timestamp|date:'Y-m-d H:i:s' }}
             </td>
             <td >
-                {{ role.role_desc }}
+                {{ warning.sip }}:{{ warning.port_src }}
             </td>
-            <td class="td-manage">
-                <a title="编辑"  href="javascript:location.replace('{% url 'nids:panel_role_update' role.role_id %}');">
-                    <i class="layui-icon">&#xe642;</i>
-                </a>
-                <a title="删除" href="javascript:;" onclick="role_del(this,'{% url 'nids:action_role_delete' role.role_id %}')"
-                   style="text-decoration:none">
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
+            <td >
+                {{ warning.dip }}:{{ warning.port_dst }}
             </td>
+            <td class="td-status">
+                <!--                    ip_proto: ip数据包的上层协议ICMP(1)、TCP(6)、UDP(17)-->
+                {% if warning.ip_proto == 1 %}
+                <span class="layui-btn layui-btn-normal layui-btn-mini">ICMP</span>
+                {% elif warning.ip_proto == 6 %}
+                <span class="layui-btn layui-btn-danger layui-btn-mini">TCP</span>
+                {% elif warning.ip_proto == 17 %}
+                <span class="layui-btn layui-btn-warm layui-btn-mini">UDP</span>
+                {% endif %}
+            </td>
+<!--            <td class="td-manage">-->
+
+<!--            </td>-->
         </tr>
         {% endfor %}
         </tbody>
@@ -79,9 +92,9 @@
 <script src="{% static 'nids/lib/layui/layui.js' %}" charset="utf-8"></script>
 <script src="{% static 'nids/js/x-layui.js' %}" charset="utf-8"></script>
 <script>
-            layui.use(['laydate','element','laypage','layer'], function(){
+            //layui.use(['laydate','element','laypage','layer'], function(){
+            layui.use(['laypage','layer'], function(){
                 $ = layui.jquery;//jquery
-              lement = layui.element();//面包导航
               laypage = layui.laypage;//分页
               layer = layui.layer;//弹出层
 
@@ -90,23 +103,23 @@
               laypage({
                 cont: 'page'
                 ,pages: {{ page_total }}
-                ,curr: {{ roles.number }}
+                ,curr: {{ warnings.number }}
                 ,first: 1
                 ,last: {{ page_total }}
                 ,prev: '<em><</em>'
                 ,next: '<em>></em>'
                 ,jump: function(obj, first){
                     var num = obj.curr
-                    if({{ roles.number }} != num){
-                        window.location.href='/nids/panel_role_list/' + num + '/'
+                    if({{ warnings.number }} != num){
+                        window.location.href='/nids/panel_latest_warning/' + num + '/'
                     }
                   }
               });
               
             });
 
-            /*用户-删除*/
-            function role_del(obj,deleteurl){
+            /*警告-删除*/
+            function warning_del(obj,deleteurl){
                 layer.confirm('确认要删除吗？',function(index){
                     //发异步删除数据
                     $.ajax({url:deleteurl, async:false});

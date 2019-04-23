@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 from django.core.paginator import Paginator
-from nids.models import User, Role
+from nids.models import User, Role, FullEvent
 import hashlib
 
 
@@ -59,13 +59,16 @@ def panel_welcome(request):
     return render(request, 'nids/welcome.html')
 
 
-def panel_latest_warning(request):
+def panel_latest_warning(request, page_num):
     """
     最新告警界面
     :param request:
     :return:
     """
-    return HttpResponse('Hello World!')
+    fullevents = FullEvent.objects.order_by('-timestamp')
+    p = Paginator(fullevents, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_latest_warning.html', {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num-1)})
 
 
 def panel_log_query(request):
@@ -212,7 +215,7 @@ def panel_user_list(request, page_num):
     users = User.objects.exclude(usr_id=usr_id)
     paginator = Paginator(users, 10)
     page = paginator.get_page(page_num)
-    return render(request, 'nids/panel_user_list.html', {'users': page, 'num_pages': paginator.num_pages})
+    return render(request, 'nids/panel_user_list.html', {'users': page, 'page_total': paginator.num_pages})
 
 
 def panel_user_update(request, usr_id):
@@ -306,7 +309,7 @@ def panel_role_list(request, page_num):
     roles = Role.objects.all()
     paginator = Paginator(roles, 10)
     page = paginator.get_page(page_num)
-    return render(request, 'nids/panel_role_list.html', {'roles': page, 'num_pages': paginator.num_pages})
+    return render(request, 'nids/panel_role_list.html', {'roles': page, 'page_total': paginator.num_pages})
 
 
 def panel_role_update(request, role_id):
@@ -391,7 +394,7 @@ def panel_shutdown_reboot(request):
     return HttpResponse('Hello World!')
 
 
-def panel_event_detail(request):
+def panel_event_detail(request, eid):
     """
     时间细节
     :param request:

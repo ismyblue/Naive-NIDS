@@ -366,6 +366,7 @@ class User(models.Model):
 
 
 class FullEvent(models.Model):
+    eid = models.IntegerField(primary_key=True)
     sid = models.ForeignKey(Sensor, db_column='sid', on_delete=models.CASCADE)
     cid = models.ForeignKey(Event, db_column='cid', on_delete=models.CASCADE)
     signature = models.ForeignKey(Signature, db_column='signature', on_delete=models.CASCADE)
@@ -378,6 +379,24 @@ class FullEvent(models.Model):
     ip_proto = UnsignedIntegerField(blank=True) # ip_proto: ip数据包的上层协议ICMP(1)、TCP(6)、UDP(17)
     port_src = UnsignedIntegerField(blank=True, db_column='layer4_sport')
     port_dst = UnsignedIntegerField(blank=True, db_column='layer4_dport')
+
+    def sip(self):
+        s = bin(self.ip_src)
+        s = s[2:]
+        s1 = s[0:8]
+        s2 = s[8:16]
+        s3 = s[16:24]
+        s4 = s[24:32]
+        return '{}.{}.{}.{}'.format(int(s1, 2), int(s2, 2), int(s3, 2), int(s4, 2))
+
+    def dip(self):
+        s = bin(self.ip_dst)
+        s = s[2:]
+        s1 = s[0:8]
+        s2 = s[8:16]
+        s3 = s[16:24]
+        s4 = s[24:32]
+        return '{}.{}.{}.{}'.format(int(s1, 2), int(s2, 2), int(s3, 2), int(s4, 2))
 
     class Meta:
         db_table = 'acid_event'
