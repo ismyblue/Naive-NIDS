@@ -27,9 +27,9 @@ urlpatterns = [
     # 端口扫描告警界面
     path('panel_port_scan_warning/<int:page_num>/', views.panel_port_scan_warning, name='panel_port_scan_warning'),
     # 来源ip告警界面
-    path('panel_srcip_warning/', views.panel_srcip_warning, name='panel_srcip_warning'),
+    path('panel_srcip_warning/<int:page_num>/', views.panel_srcip_warning, name='panel_srcip_warning'),
     # 目的ip告警界面
-    path('panel_dstip_warning/', views.panel_dstip_warning, name='panel_dstip_warning'),
+    path('panel_dstip_warning/<int:page_num>/', views.panel_dstip_warning, name='panel_dstip_warning'),
     # 来源端口告警界面
     path('panel_srcport_warning/', views.panel_srcport_warning, name='panel_srcport_warning'),
     # 目的端口告警界面
@@ -59,6 +59,10 @@ urlpatterns = [
 
     # 详细事件界面
     path('panel_event_detail/<int:eid>/', views.panel_event_detail, name='panel_event_detail'),
+    # 源ip所有事件列表
+    path('panel_ip_src_list/<str:ip_src>/', views.panel_ip_src_list, name='panel_ip_src_list'),
+    # 目的ip所有事件列表
+    path('panel_ip_dst_list/<str:ip_src>/', views.panel_ip_dst_list, name='panel_ip_dst_list'),
 
 
 

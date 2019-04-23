@@ -141,22 +141,52 @@ def panel_port_scan_warning(request, page_num):
                   {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
-def panel_srcip_warning(request):
+def panel_srcip_warning(request, page_num):
     """
     返回源ip告警信息界面
     :param request:
     :return:
     """
-    return HttpResponse('Hello World!')
+    ip_srcs = FullEvent.objects.order_by('-timestamp').values('ip_src', 'ip_proto').distinct()
+    iplist = set()
+    for i in ip_srcs:
+        iplist.add(i['ip_src'])
+    ip_srcs = []
+    for i in iplist:
+        ip_srcs.append(FullEvent.objects.order_by('-timestamp').filter(ip_src=i)[0])
+    p = Paginator(ip_srcs, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_srcip_warning.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
-def panel_dstip_warning(request):
+def __getip(ip):
+    s = bin(ip)
+    s = s[2:]
+    s1 = s[0:8]
+    s2 = s[8:16]
+    s3 = s[16:24]
+    s4 = s[24:32]
+    return '{}.{}.{}.{}'.format(int(s1, 2), int(s2, 2), int(s3, 2), int(s4, 2))
+
+
+def panel_dstip_warning(request, page_num):
     """
     返回目的ip告警信息界面
     :param request:
     :return:
     """
-    return HttpResponse('Hello World!')
+    ip_dsts = FullEvent.objects.order_by('-timestamp').values('ip_dst', 'ip_proto').distinct()
+    iplist = set()
+    for i in ip_dsts:
+        iplist.add(i['ip_dst'])
+    ip_dsts = []
+    for i in iplist:
+        ip_dsts.append(FullEvent.objects.order_by('-timestamp').filter(ip_dst=i)[0])
+    p = Paginator(ip_dsts, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_dstip_warning.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
 def panel_srcport_warning(request):
@@ -419,6 +449,19 @@ def panel_event_detail(request, eid):
     return HttpResponse('Hello World!')
 
 
+def panel_ip_src_list(request, ip_src):
+    """
+    时间细节
+    :param request:
+    :return:
+    """
+    return HttpResponse('Hello World!')
 
 
-
+def panel_ip_dst_list(request, ip_dst):
+    """
+    时间细节
+    :param request:
+    :return:
+    """
+    return HttpResponse('Hello World!')
