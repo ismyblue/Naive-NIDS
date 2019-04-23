@@ -89,40 +89,56 @@ def panel_log_export_history(request):
     return HttpResponse('Hello World!')
 
 
-def panel_tcp_warning(request):
+def panel_tcp_warning(request, page_num):
     """
     返回tcp告警界面
     :param request:
     :return:
     """
-    return HttpResponse('Hello World!')
+    fullevents = FullEvent.objects.order_by('-timestamp').filter(ip_proto=6)
+    p = Paginator(fullevents, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_tcp_warning.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
-def panel_udp_warning(request):
+def panel_udp_warning(request, page_num):
     """
     返回udp告警界面
     :param request:
     :return:
     """
-    return HttpResponse('Hello World!')
+    fullevents = FullEvent.objects.order_by('-timestamp').filter(ip_proto=17)
+    p = Paginator(fullevents, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_udp_warning.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
-def panel_icmp_warning(request):
+def panel_icmp_warning(request, page_num):
     """
     返回icmp告警界面
     :param request:
     :return:
     """
-    return HttpResponse('Hello World!')
+    fullevents = FullEvent.objects.order_by('-timestamp').filter(ip_proto=1)
+    p = Paginator(fullevents, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_icmp_warning.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
-def panel_port_scan_warning(request):
+def panel_port_scan_warning(request, page_num):
     """
     返回端口扫描告警界面
     :param request:
     :return:
     """
-    return HttpResponse('Hello World!')
+    fullevents = FullEvent.objects.order_by('-timestamp')
+    p = Paginator(fullevents, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_port_scan_warning.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
 def panel_srcip_warning(request):

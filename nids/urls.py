@@ -19,13 +19,13 @@ urlpatterns = [
     # 日志导出记录界面
     path('panel_log_export_history/', views.panel_log_export_history, name='panel_log_export_history'),
     # TCP告警界面
-    path('panel_tcp_warning/', views.panel_tcp_warning, name='panel_tcp_warning'),
+    path('panel_tcp_warning/<int:page_num>/', views.panel_tcp_warning, name='panel_tcp_warning'),
     # UDP告警界面
-    path('panel_udp_warning/', views.panel_udp_warning, name='panel_udp_warning'),
+    path('panel_udp_warning/<int:page_num>/', views.panel_udp_warning, name='panel_udp_warning'),
     # ICMP告警界面
-    path('panel_icmp_warning/', views.panel_icmp_warning, name='panel_icmp_warning'),
+    path('panel_icmp_warning/<int:page_num>/', views.panel_icmp_warning, name='panel_icmp_warning'),
     # 端口扫描告警界面
-    path('panel_port_scan_warning/', views.panel_port_scan_warning, name='panel_port_scan_warning'),
+    path('panel_port_scan_warning/<int:page_num>/', views.panel_port_scan_warning, name='panel_port_scan_warning'),
     # 来源ip告警界面
     path('panel_srcip_warning/', views.panel_srcip_warning, name='panel_srcip_warning'),
     # 目的ip告警界面
