@@ -170,14 +170,18 @@ def panel_srcip_warning(request, page_num):
                   {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
-def panel_srcip_list(request, ip_src):
+def panel_srcip_list(request, ip_src, page_num):
     """
     返回某一源端口的所有告警列表中的某一页
     :param request:
     :param ip_src:
     :return:
     """
-    return HttpResponse('Hello World!')
+    fullevents = FullEvent.objects.order_by('-timestamp').filter(ip_src=ip_src)
+    p = Paginator(fullevents, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_srcip_list.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
 def panel_dstip_warning(request, page_num):
@@ -207,7 +211,11 @@ def panel_dstip_list(request, ip_dst, page_num):
     :param page_num:
     :return:
     """
-    return HttpResponse('Hello World!')
+    fullevents = FullEvent.objects.order_by('-timestamp').filter(ip_dst=ip_dst)
+    p = Paginator(fullevents, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_dstip_list.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
 def panel_srcport_warning(request, page_num):
@@ -237,7 +245,13 @@ def panel_srcport_list(request, port_src, page_num):
     :param page_num:
     :return:
     """
-    return HttpResponse('Hello World!')
+    if port_src == 'None':
+        port_src = None
+    fullevents = FullEvent.objects.order_by('-timestamp').filter(port_src=port_src)
+    p = Paginator(fullevents, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_srcport_list.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
 def panel_dstport_warning(request, page_num):
@@ -267,7 +281,13 @@ def panel_dstport_list(request, port_dst, page_num):
     :param page_num:
     :return:
     """
-    return HttpResponse('Hello World!')
+    if port_dst == 'None':
+        port_dst = None
+    fullevents = FullEvent.objects.order_by('-timestamp').filter(port_dst=port_dst)
+    p = Paginator(fullevents, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_dstport_list.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
 def panel_profile(request):
@@ -503,3 +523,11 @@ def panel_shutdown_reboot(request):
     return HttpResponse('Hello World!')
 
 
+def __getip(ip):
+    s = bin(int(ip))
+    s = s[2:]
+    s1 = s[0:8]
+    s2 = s[8:16]
+    s3 = s[16:24]
+    s4 = s[24:32]
+    return '{}.{}.{}.{}'.format(int(s1, 2), int(s2, 2), int(s3, 2), int(s4, 2))

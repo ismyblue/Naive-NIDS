@@ -9,7 +9,6 @@ class VerifyLogin(MiddlewareMixin):
 
     def process_request(self, request):
         session = request.session
-        print(session.items())
         if 'login_status' not in session.keys() or not request.session['login_status']:
             if request.path != '/nids/panel_login/':
                 return redirect(reverse('nids:panel_login'))
@@ -27,3 +26,5 @@ class FillUserInfo(MiddlewareMixin):
             usr_name = request.session['usr_name']
             response.context_data['usr_name'] = usr_name
         return response
+
+

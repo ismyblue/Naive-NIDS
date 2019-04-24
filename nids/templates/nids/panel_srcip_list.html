@@ -18,12 +18,17 @@
 <div class="x-nav">
             <span class="layui-breadcrumb">
               <a><cite>Naive NIDS</cite></a>
-              <a><cite>端口分类</cite></a>
-              <a><cite>目的端口</cite></a>
+              <a><cite>IP分类</cite></a>
+              <a><cite>来源IP</cite></a>
             </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
 <div class="x-body">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;"  href="javascript:location.replace('{% url 'nids:panel_srcip_warning' 1 %}');" title="返回">
+        <i class="layui-icon" style="line-height:30px"><-</i>
+    </a>
+    <i class="layui-icon" style="line-height:30px">来源IP{{ warnings.0.sip }}的所有事件列表</i>
+    <xblock><span class="x-right" style="line-height:40px">共有数据：{{ warnings|length }} 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -31,35 +36,49 @@
                 序号
             </th>
             <th>
-                目的端口
+                攻击事件
             </th>
             <th>
-                最新时间戳
+                时间戳
             </th>
             <th>
-                最新攻击事件
+                来源地址
             </th>
             <th>
-                操作
+                目标地址
+            </th>
+            <th>
+                第四层协议
             </th>
         </tr>
         </thead>
         <tbody>
         {% for warning in warnings %}
         <tr>
-            <td>{{ forloop.counter|add:index }}
+            <td>
+                {{ forloop.counter|add:index }}
             </td>
             <td>
-                {{ warning.port_dst }}
+                <a href="javascript:location.replace('{% url 'nids:panel_event_detail' warning.eid %}');" title="查看{{ warning.sig_name }}的详细信息">{{ warning.sig_name }}</a>
             </td>
             <td>
                 {{ warning.timestamp|date:'Y-m-d H:i:s' }}
             </td>
-            <td>
-                {{ warning.sig_name }}
+            <td >
+                {{ warning.sip }}:{{ warning.port_src }}
             </td>
-            <td class="td-manage">
-                <a href="javascript:location.replace('{% url 'nids:panel_dstport_list' warning.port_dst 1 %}');" title="查看{{ warning.port_dst }}的详细信息">show list</a>
+            <td >
+                {{ warning.dip }}:{{ warning.port_dst }}
+            </td>
+            <td class="td-status">
+                <!--                    ip_proto: ip数据包的上层协议ICMP(1)、TCP(6)、UDP(17)-->
+                {% if warning.ip_proto == 1 %}
+                <span class="layui-btn layui-btn-normal layui-btn-mini">ICMP</span>
+                {% elif warning.ip_proto == 6 %}
+                <span class="layui-btn layui-btn-danger layui-btn-mini">TCP</span>
+                {% elif warning.ip_proto == 17 %}
+                <span class="layui-btn layui-btn-warm layui-btn-mini">UDP</span>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -89,7 +108,7 @@
                 ,jump: function(obj, first){
                     var num = obj.curr
                     if({{ warnings.number }} != num){
-                        window.location.href='/nids/panel_dstport_warning/' + num + '/'
+                        window.location.href='/nids/panel_srcip_list/{{ warnings.0.ip_src }}/' + num + '/'
                     }
                   }
               });
