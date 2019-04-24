@@ -64,7 +64,7 @@
                 {{ warning.sig_name }}
             </td>
             <td class="td-manage">
-                <a href="javascript:location.replace('{% url 'nids:panel_ip_src_list' warning.ip_src %}');" title="查看{{ warning.sip }}的详细信息">show list</a>
+                <a href="javascript:location.replace('{% url 'nids:panel_srcip_list' warning.ip_src 1 %}');" title="查看{{ warning.sip }}的详细信息">show list</a>
             </td>
         </tr>
         {% endfor %}
@@ -95,7 +95,7 @@
                 ,jump: function(obj, first){
                     var num = obj.curr
                     if({{ warnings.number }} != num){
-                        window.location.href='/nids/panel_latest_warning/' + num + '/'
+                        window.location.href='/nids/panel_srcip_warning/' + num + '/'
                     }
                   }
               });

@@ -71,6 +71,16 @@ def panel_latest_warning(request, page_num):
     return render(request, 'nids/panel_latest_warning.html', {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num-1)})
 
 
+def panel_event_detail(request, eid):
+    """
+    返回事件数据细节界面
+    :param request:
+    :param eid:
+    :return:
+    """
+    return HttpResponse('Hello World!')
+
+
 def panel_log_query(request):
     """
     返回日志查询界面
@@ -160,14 +170,14 @@ def panel_srcip_warning(request, page_num):
                   {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
-def __getip(ip):
-    s = bin(ip)
-    s = s[2:]
-    s1 = s[0:8]
-    s2 = s[8:16]
-    s3 = s[16:24]
-    s4 = s[24:32]
-    return '{}.{}.{}.{}'.format(int(s1, 2), int(s2, 2), int(s3, 2), int(s4, 2))
+def panel_srcip_list(request, ip_src):
+    """
+    返回某一源端口的所有告警列表中的某一页
+    :param request:
+    :param ip_src:
+    :return:
+    """
+    return HttpResponse('Hello World!')
 
 
 def panel_dstip_warning(request, page_num):
@@ -189,19 +199,72 @@ def panel_dstip_warning(request, page_num):
                   {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
 
 
-def panel_srcport_warning(request):
+def panel_dstip_list(request, ip_dst, page_num):
     """
-    返回源端口告警信息界面
+    返回某一目标ip的所有告警列表中的某一页
     :param request:
+    :param ip_dst:
+    :param page_num:
     :return:
     """
     return HttpResponse('Hello World!')
 
 
-def panel_dstport_warning(request):
+def panel_srcport_warning(request, page_num):
+    """
+    返回源端口告警信息界面
+    :param request:
+    :return:
+    """
+    port_srcs = FullEvent.objects.order_by('-timestamp').values('port_src', 'ip_proto').distinct()
+    portlist = set()
+    for i in port_srcs:
+        portlist.add(i['port_src'])
+    port_srcs = []
+    for i in portlist:
+        port_srcs.append(FullEvent.objects.order_by('-timestamp').filter(port_src=i)[0])
+    p = Paginator(port_srcs, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_srcport_warning.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
+
+
+def panel_srcport_list(request, port_src, page_num):
+    """
+    返回某一源端口的所有告警列表中的某一页
+    :param request:
+    :param port_src:
+    :param page_num:
+    :return:
+    """
+    return HttpResponse('Hello World!')
+
+
+def panel_dstport_warning(request, page_num):
     """
     返回目的端口告警信息界面
     :param request:
+    :return:
+    """
+    port_dsts = FullEvent.objects.order_by('-timestamp').values('port_dst', 'ip_proto').distinct()
+    portlist = set()
+    for i in port_dsts:
+        portlist.add(i['port_dst'])
+    port_dsts = []
+    for i in portlist:
+        port_dsts.append(FullEvent.objects.order_by('-timestamp').filter(port_dst=i)[0])
+    p = Paginator(port_dsts, 25)
+    page = p.get_page(page_num)
+    return render(request, 'nids/panel_dstport_warning.html',
+                  {'warnings': page, 'page_total': p.num_pages, 'index': 25 * (page_num - 1)})
+
+
+def panel_dstport_list(request, port_dst, page_num):
+    """
+    返回某一目标端口的所有告警列表中的某一页
+    :param request:
+    :param ip_dst:
+    :param page_num:
     :return:
     """
     return HttpResponse('Hello World!')
@@ -440,28 +503,3 @@ def panel_shutdown_reboot(request):
     return HttpResponse('Hello World!')
 
 
-def panel_event_detail(request, eid):
-    """
-    时间细节
-    :param request:
-    :return:
-    """
-    return HttpResponse('Hello World!')
-
-
-def panel_ip_src_list(request, ip_src):
-    """
-    时间细节
-    :param request:
-    :return:
-    """
-    return HttpResponse('Hello World!')
-
-
-def panel_ip_dst_list(request, ip_dst):
-    """
-    时间细节
-    :param request:
-    :return:
-    """
-    return HttpResponse('Hello World!')

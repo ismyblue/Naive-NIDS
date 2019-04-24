@@ -46,16 +46,13 @@
             <th>
                 第四层协议
             </th>
-<!--            <th>-->
-<!--                操作-->
-<!--            </th>-->
         </tr>
         </thead>
         <tbody>
         {% for warning in warnings %}
         <tr>
             <td>
-                <!--                <input type="checkbox" value="1" name="">-->{{ forloop.counter|add:index }}
+                {{ forloop.counter|add:index }}
             </td>
             <td>
                 <a href="javascript:location.replace('{% url 'nids:panel_event_detail' warning.eid %}');" title="查看{{ warning.sig_name }}的详细信息">{{ warning.sig_name }}</a>
@@ -79,14 +76,10 @@
                 <span class="layui-btn layui-btn-warm layui-btn-mini">UDP</span>
                 {% endif %}
             </td>
-<!--            <td class="td-manage">-->
-
-<!--            </td>-->
         </tr>
         {% endfor %}
         </tbody>
     </table>
-    <!--        <div id="page"><div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-0"><span class="layui-laypage-curr"><em class="layui-laypage-em"></em><em>1</em></span><a href="javascript:;" data-page="2">2</a><a href="javascript:;" data-page="3">3</a><a href="javascript:;" data-page="4">4</a><a href="javascript:;" data-page="5">5</a><span>…</span><a href="javascript:;" class="layui-laypage-last" title="尾页" data-page="100">100</a><a href="javascript:;" class="layui-laypage-next" data-page="2"><em>&gt;</em></a></div></div>-->
     <div id="page"></div>
 </div>
 <script src="{% static 'nids/lib/layui/layui.js' %}" charset="utf-8"></script>

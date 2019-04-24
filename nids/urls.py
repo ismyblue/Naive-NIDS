@@ -14,6 +14,8 @@ urlpatterns = [
     path('panel_welcome/', views.panel_welcome, name='panel_welcome'),
     # 最新告警界面
     path('panel_latest_warning/<int:page_num>/', views.panel_latest_warning, name='panel_latest_warning'),
+    # 详细事件界面
+    path('panel_event_detail/<int:eid>/', views.panel_event_detail, name='panel_event_detail'),
     # 日志查询界面
     path('panel_log_query/', views.panel_log_query, name='panel_log_query'),
     # 日志导出记录界面
@@ -28,12 +30,20 @@ urlpatterns = [
     path('panel_port_scan_warning/<int:page_num>/', views.panel_port_scan_warning, name='panel_port_scan_warning'),
     # 来源ip告警界面
     path('panel_srcip_warning/<int:page_num>/', views.panel_srcip_warning, name='panel_srcip_warning'),
+    # 某一源ip所有事件列表中的某一页
+    path('panel_srcip_list/<str:ip_src>/<int:page_num>/', views.panel_srcip_list, name='panel_srcip_list'),
     # 目的ip告警界面
     path('panel_dstip_warning/<int:page_num>/', views.panel_dstip_warning, name='panel_dstip_warning'),
+    # 某一目的ip所有事件列表某一页
+    path('panel_dstip_list/<str:ip_dst>/<int:page_num>/', views.panel_dstip_list, name='panel_dstip_list'),
     # 来源端口告警界面
-    path('panel_srcport_warning/', views.panel_srcport_warning, name='panel_srcport_warning'),
+    path('panel_srcport_warning/<int:page_num>/', views.panel_srcport_warning, name='panel_srcport_warning'),
+    # 某一源port所有事件列表某一页
+    path('panel_srcport_list/<str:port_src>/<int:page_num>/', views.panel_srcport_list, name='panel_srcport_list'),
     # 目的端口告警界面
-    path('panel_dstport_warning/', views.panel_dstport_warning, name='panel_dstport_warning'),
+    path('panel_dstport_warning/<int:page_num>/', views.panel_dstport_warning, name='panel_dstport_warning'),
+    # 某一目的port所有事件列表某一页
+    path('panel_dstport_list/<str:port_dst>/<int:page_num>/', views.panel_dstport_list, name='panel_dstport_list'),
     # 个人信息界面
     path('panel_profile/', views.panel_profile, name='panel_profile'),
     # 信息修改界面 信息修改动作
@@ -56,13 +66,6 @@ urlpatterns = [
     path('panel_system_log/', views.panel_system_log, name='panel_system_log'),
     # 关闭重启界面
     path('panel_shutdown_reboot/', views.panel_shutdown_reboot, name='panel_shutdown_reboot'),
-
-    # 详细事件界面
-    path('panel_event_detail/<int:eid>/', views.panel_event_detail, name='panel_event_detail'),
-    # 源ip所有事件列表
-    path('panel_ip_src_list/<str:ip_src>/', views.panel_ip_src_list, name='panel_ip_src_list'),
-    # 目的ip所有事件列表
-    path('panel_ip_dst_list/<str:ip_src>/', views.panel_ip_dst_list, name='panel_ip_dst_list'),
 
 
 
